@@ -1,0 +1,33 @@
+{
+  "name": "recknweather-db",
+  "version": "1.0.0",
+  "description": "Database for the RecknWeather application for user profiles. Saved using nodejs and mongodb",
+  "main": "dist/app.js",
+  "scripts": {
+    "start": "nodemon dist/app.js",
+    "compile": "tsc -w",
+    "compile-once": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saarang1995/recknweather_db.git"
+  },
+  "keywords": [
+    "NODEJS",
+    "MONGODB",
+    "MONGOOSE"
+  ],
+  "author": "Saarang Tiwari",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saarang1995/recknweather_db/issues"
+  },
+  "homepage": "https://github.com/saarang1995/recknweather_db#readme",
+  "dependencies": {
+    "@types/express": "^4.16.1",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.5.0"
+  }
+}
