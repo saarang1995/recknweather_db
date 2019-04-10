@@ -13,12 +13,28 @@ const User = mongoose.model('user', userSchema);
 export default class UserClass {
     public static addUser(userObject: UserIntf) {
         const user = new User(userObject);
-        user.save((error, usr) => {
-            if (error) {
-                console.error('Error while saving user in Database ' + error);
-            } else {
-                console.log('saved user:  ' + usr);
-            }
+        return new Promise((resolve, reject) => {
+            user.save((error, usr) => {
+                if (error) {
+                    resolve('Error while saving user in Database ' + error);
+                } else {
+                    reject('saved user:  ' + usr);
+                }
+            });
+        });
+    }
+
+    public static isAuthorized(userObject: UserIntf) {
+        return new Promise((resolve, reject) => {
+            User.find({ name: userObject.name, password: userObject.password }, 'name', (error, user: []) => {
+                if (error) {
+                    reject(error);
+                }
+                else {
+                    resolve(user)
+                }
+            });
+
         });
     }
 }
