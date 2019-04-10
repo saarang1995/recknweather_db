@@ -11,17 +11,14 @@ const userSchema = mongoose.Schema({
 const User = mongoose.model('user', userSchema);
 
 export default class UserClass {
-    public static addUser(userObject: UserIntf): string {
-
-        let response = '';
+    public static addUser(userObject: UserIntf) {
         const user = new User(userObject);
         user.save((error, usr) => {
             if (error) {
-                response = 'Error while saving user in Database ' + error;
+                console.error('Error while saving user in Database ' + error);
             } else {
-                response = 'saved user:  ' + usr;
+                console.log('saved user:  ' + usr);
             }
         });
-        return response;
     }
 }

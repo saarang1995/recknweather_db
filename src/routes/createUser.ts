@@ -3,6 +3,7 @@ import {
   Response
 } from 'express';
 import UserClass from '../models/userClass';
+import UserIntf from '../interfaces/userIntf';
 
 
 export default class CreateUser {
@@ -10,7 +11,7 @@ export default class CreateUser {
     app.route('/create_user')
       .post((req: Request, res: Response) => {
         const body = req.body;
-        const success = this.addUserToDB(body.userName, body.password);
+        const success = this.addUserToDB({ name: body.userName, password: body.password});
         if(success) {
           res.send('User saved');
         }
@@ -22,12 +23,9 @@ export default class CreateUser {
       })
   }
 
-  private addUserToDB(userName: string, password: string): boolean {
-    if (userName && password && userName != '' && password != '') {
-      UserClass.addUser({
-        name: userName,
-        password: password
-      });
+  private addUserToDB(userObject: UserIntf): boolean {
+    if (userObject && userObject.name != '' && userObject.password != '') {
+      UserClass.addUser(userObject);
       return true;
     } else {
       return false;

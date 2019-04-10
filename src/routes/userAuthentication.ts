@@ -11,4 +11,8 @@ export default class UserAuthentication {
         res.end();
       })
   }
+
+  private checkIfUserIsRegistered() {
+
+  }
 }
