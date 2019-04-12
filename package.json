@@ -14,7 +14,9 @@
     "url": "git+https://github.com/saarang1995/recknweather_db.git"
   },
   "engines": {
-    "node": "11.11.0"
+    "node": "11.11.0",
+    "npm": "6.7.0",
+    "yarn": "1.15.2"
   },
   "keywords": [
     "NODEJS",
