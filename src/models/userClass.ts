@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 import UserIntf from '../interfaces/userIntf';
 
-mongoose.connect('mongodb://127.0.0.1:27017/test', { useNewUrlParser: true });
+mongoose.connect('mongodb://heroku_fnbnpz89:admin@123@ds239206.mlab.com:39206/heroku_fnbnpz89', { useNewUrlParser: true });
 
 const userSchema = mongoose.Schema({
     name: String,
