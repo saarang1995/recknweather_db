@@ -4,7 +4,7 @@ import UserIntf from '../interfaces/userIntf';
 let User;
 
 try {
-    mongoose.connect('mongodb://saarang:' +encodeURIComponent('saarang@123') +'@ds239206.mlab.com:39206/heroku_fnbnpz89', { useNewUrlParser: true });
+    mongoose.connect('mongodb://saarang:' + encodeURIComponent('saarang@123') + '@ds239206.mlab.com:39206/heroku_fnbnpz89', { useNewUrlParser: true });
 
 } catch (error) {
 
@@ -25,28 +25,10 @@ export default class UserClass {
             return;
         }
         const user = new User(userObject);
-        return new Promise((resolve, reject) => {
-            user.save((error, usr) => {
-                if (error) {
-                    resolve('Error while saving user in Database ' + error);
-                } else {
-                    reject('saved user:  ' + usr);
-                }
-            });
-        });
+        return user.save();
     }
 
     public static isAuthorized(userObject: UserIntf) {
-        return new Promise((resolve, reject) => {
-            User.find({ name: userObject.name, password: userObject.password }, 'name', (error, user: []) => {
-                if (error) {
-                    reject(error);
-                }
-                else {
-                    resolve(user)
-                }
-            });
-
-        });
+        return User.find({ name: userObject.name, password: userObject.password }, 'name');
     }
 }
