@@ -1,17 +1,29 @@
 import * as mongoose from 'mongoose';
 import UserIntf from '../interfaces/userIntf';
 
-mongoose.connect('mongodb://heroku_fnbnpz89:admin@123@ds239206.mlab.com:39206/heroku_fnbnpz89', { useNewUrlParser: true });
+let User;
 
-const userSchema = mongoose.Schema({
-    name: String,
-    password: String
-});
+try {
+    mongoose.connect('mongodb://saarang:saarang@123@ds239206.mlab.com:39206/heroku_fnbnpz89', { useNewUrlParser: true });
 
-const User = mongoose.model('user', userSchema);
+} catch (error) {
+
+}
+if (mongoose) {
+    const userSchema = mongoose.Schema({
+        name: String,
+        password: String
+    });
+
+    User = mongoose.model('user', userSchema);
+
+}
 
 export default class UserClass {
     public static addUser(userObject: UserIntf) {
+        if (!User) {
+            return;
+        }
         const user = new User(userObject);
         return new Promise((resolve, reject) => {
             user.save((error, usr) => {
