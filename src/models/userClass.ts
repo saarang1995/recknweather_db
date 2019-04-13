@@ -4,7 +4,7 @@ import UserIntf from '../interfaces/userIntf';
 let User;
 
 try {
-    mongoose.connect('mongodb://saarang:saarang@123@ds239206.mlab.com:39206/heroku_fnbnpz89', { useNewUrlParser: true });
+    mongoose.connect('mongodb://saarang:' +encodeURIComponent('saarang@123') +'@ds239206.mlab.com:39206/heroku_fnbnpz89', { useNewUrlParser: true });
 
 } catch (error) {
 
