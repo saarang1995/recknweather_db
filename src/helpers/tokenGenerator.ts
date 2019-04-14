@@ -13,7 +13,14 @@ export default class TokenGenerator {
         }
     }
 
-    public static verify(token: string) {
-        return jwt.verify(token, config.jwt.publicKey, { expiresIn: "12h" });
+    public static async verify(token: string) {
+        // jwt.verify(token, config.jwt.privateKey, { expiresIn: "12h" })
+        
+        // try {
+            
+        // } catch (error) {
+            
+        // }
+        return await jwt.verify(token, config.jwt.privateKey, { expiresIn: "12h" });
     }
 }

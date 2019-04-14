@@ -15,13 +15,12 @@ export default class UserAuthentication {
         const body = req.body;
 
 
-        const isTokenValid = TokenGenerator.verify(body.token);
-        console.log(isTokenValid);
-        // if (isTokenValid) {
-        //   ResponseSender.send(res, 200, true, 'Token valid');
-        // } else {
-        //   ResponseSender.send(res, 401, false, 'Token expired');
-        // }
+        TokenGenerator.verify(body.token).then( () => {
+          ResponseSender.send(res, 200, true, 'Token valid');
+
+        } ).catch( () => {
+          ResponseSender.send(res, 401, false, 'Token expired');
+        });
 
         // UserClass.isAuthorized({ name: body.userName, password: body.password }).then((result) => {
         //   if (result.length && result[0]) {
