@@ -14,6 +14,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const routeGenerator = new RouteGenerator();
 routeGenerator.init(app);
 
-httpServer.listen(port, () => {
+httpServer.listen(process.env.PORT || port, () => {
     console.log(`Server running on ${port}`);
 });
