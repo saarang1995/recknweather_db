@@ -4,7 +4,7 @@
   "description": "Database for the RecknWeather application for user profiles. Saved using nodejs and mongodb",
   "main": "dist/app.js",
   "scripts": {
-    "start": "node dist/app.js",
+    "start": "nodemon dist/app.js",
     "build": "tsc",
     "compile": "tsc -w",
     "compile-once": "tsc",

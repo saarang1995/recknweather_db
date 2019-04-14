@@ -4,6 +4,7 @@ import {
 } from 'express';
 import UserClass from '../models/userClass';
 import UserIntf from '../interfaces/userIntf';
+import ResponseSender from '../helpers/responseSender';
 
 export default class CreateUser {
   public routes(app): void {
@@ -17,25 +18,18 @@ export default class CreateUser {
   private checkExistenceAndAddUser(userObject: UserIntf, res: Response) {
     UserClass.isAuthorized(userObject).then((result: []) => {
       if (result.length) {
-        res.status(500);
-        res.send('user already exists');
-        res.end();
+        ResponseSender.send(res, 500, false, 'user already exists');
       }
       else {
         UserClass.addUser(userObject).then((result) => {
-          res.send(result);
-          res.status(200);
-          res.end();
-        }).catch((reason) => {
-          res.send(reason);
-          res.status(500);
-          res.end();
+          ResponseSender.send(res, 200, true, result);
+        }).catch((error) => {
+          ResponseSender.send(res, 500, false, error);
         });
       }
-      
-    }).catch((reason) => {
-      res.send('Error reason: ' + reason);
-      res.end();
+
+    }).catch((error) => {
+      ResponseSender.send(res, 500, false, error);
     });
   }
 }
