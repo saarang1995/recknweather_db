@@ -23,6 +23,20 @@ export default class CreateUser {
       }
       else {
         UserClass.addUser(userObject).then((result) => {
+
+          /* ------------------------------------------------------------------------------------------
+                                  JWT approach for token base authentication:
+                            for sending a token instead of just the okay response.
+                         
+                       ->      let token = TokenGenerator.sign(userObject);
+                            ResponseSender.send(res, 200, true, result, token);
+
+
+                            else  -> ResponseSender.send(res, 200, true, result);
+
+           ------------------------------------------------------------------------------------------
+           */
+
           let token = TokenGenerator.sign(userObject);
           ResponseSender.send(res, 200, true, result, token);
         }).catch((error) => {
