@@ -46,6 +46,6 @@ export default class UserClass {
   }
 
   public static isAuthorized(userObject: UserIntf) {
-    return User.find({ name: userObject.name}, 'name, password');
+    return User.find({ email: userObject.email}, 'name, password, email');
   }
 }
