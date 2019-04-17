@@ -12,7 +12,7 @@ export default class CreateUser {
     app.route('/create_user')
       .post((req: Request, res: Response) => {
         const body = req.body;
-        this.checkExistenceAndAddUser({ name: body.userName, password: body.password }, res);
+        this.checkExistenceAndAddUser({ name: body.name, password: body.password, email: body.email }, res);
       });
   }
 

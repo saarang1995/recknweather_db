@@ -17,7 +17,8 @@ try {
 if (mongoose) {
   const userSchema = mongoose.Schema({
     name: String,
-    password: String
+    password: String,
+    email: String
   });
 
   User = mongoose.model('user', userSchema);
