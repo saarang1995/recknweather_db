@@ -12,14 +12,29 @@ export default class CreateUser {
     app.route('/create_user')
       .post((req: Request, res: Response) => {
         const body = req.body;
+        console.log(body);
         this.checkExistenceAndAddUser({ name: body.name, password: body.password, email: body.email }, res);
+      });
+
+    app.route('/login')
+      .post((req: Request, res: Response) => {
+        const body = req.body;
+        const userObject = { name: body.name, password: body.password, email: body.email }
+        UserClass.isAuthorized(userObject).then((result) => {
+          console.log(result);
+          if (result.length) {
+            let token = TokenGenerator.sign(userObject);
+            ResponseSender.send(res, 200, true, result, token);
+          }
+        }).catch();
       });
   }
 
   private checkExistenceAndAddUser(userObject: UserIntf, res: Response) {
-    UserClass.isAuthorized(userObject).then((result: []) => {
+    UserClass.isExistingUser(userObject).then((result: []) => {
+      console.log(result)
       if (result.length) {
-        ResponseSender.send(res, 500, false, 'authorized');
+        ResponseSender.send(res, 500, false, 'Already existing user');
       }
       else {
         UserClass.addUser(userObject).then((result) => {

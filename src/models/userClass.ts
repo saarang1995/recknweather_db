@@ -30,22 +30,42 @@ export default class UserClass {
     if (!User) {
       return;
     }
-    return HashGenerator.encrypt(userObject.password).then(hash => {
-      if (hash) {
-        userObject.password = hash;
-        const user = new User(userObject);
-        return user.save();
-      } else {
-        console.error('Error occurred while generating password hash');
-        return null;
-      }
-    }).catch(error => {
-      console.error(`Error while generating password hash -> ${error}`);
-      return null;
-    });
+    const user = new User(userObject);
+    return user.save();
+
+    // return UserClass.encrypt(userObject.password).then((hashedPassword: string) => {
+    //   userObject.password = hashedPassword;
+    //   const user = new User(userObject);
+    //   return user.save();
+    // }).catch();
+  }
+
+  public static isExistingUser(userObject: UserIntf) {
+    return User.find({ email: userObject.email }, 'name, password, email');
   }
 
   public static isAuthorized(userObject: UserIntf) {
-    return User.find({ email: userObject.email}, 'name, password, email');
+    return User.find({ email: userObject.email, password: userObject.password }, 'name, password, email');
+
+    // return UserClass.encrypt(userObject.password).then((hashedPassword: string) => {
+    //   return User.find({ email: userObject.email, password: hashedPassword }, 'name, password, email');
+    // }).catch(() => { return null; });
+  }
+
+  private static encrypt(value: string) {
+    return new Promise((resolve, reject) => {
+      HashGenerator.encrypt(value).then(hash => {
+        if (hash) {
+          console.log(`input- ${value}`);
+          console.log(`output- ${hash}`);
+          resolve(hash);
+        } else {
+          reject('Error occurred while generating password hash');
+        }
+      }).catch(error => {
+        reject(`Error occurred while generating password hash -> ${error}`);
+      });
+    });
+
   }
 }

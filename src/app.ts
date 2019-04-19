@@ -9,11 +9,14 @@ const httpServer = http.createServer(app);
 const port = 3000;
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, token");
+    next();
 });
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.get('/test',(req,res) => {
+    res.status(200).send('welcome to RecknWeather API');
+})
 const routeGenerator = new RouteGenerator();
 routeGenerator.init(app);
 
