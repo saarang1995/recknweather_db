@@ -6,6 +6,7 @@ const config = {
         port: '39206',
         host: 'ds239206.mlab.com'
     },
+    accu_weather_api_key: 'KpGujZuD8lj8xle9beOkCVsGZbsgaDnT',
     jwt: {
         privateKey: `MIIEpAIBAAKCAQEAojeowlRFDkmDOmTVE8x9NIgUsvyDYSvqMOSLoUW2cJz+1m6g
         j77+1uhnisKHVnV86scEN9sGMUlEZLwbzpfeQR1ttkDj6Vs0xhUfdduZElwMK+pb
