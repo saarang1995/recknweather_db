@@ -4,6 +4,7 @@ import {
   Response,
   Request
 } from 'express';
+import TokenGenerator from '../helpers/tokenGenerator';
 
 export default class AccuWeather {
 
@@ -21,9 +22,21 @@ export default class AccuWeather {
   public routes(app): void {
     app.route('/fetch_regions')
       .post((req: Request, res: Response) => {
-        this.fetchRegionList().subscribe((data) => {
-          ResponseSender.send(res, 200, true, data);
+        const authToken = req.header['token'];
+        if (!authToken) {
+          ResponseSender.send(res, 400, false, 'Authentication token is required.');
+          return;
+        }
+
+        TokenGenerator.verify(authToken).then(() => {
+          this.fetchRegionList().subscribe((data) => {
+            ResponseSender.send(res, 200, true, data);
+          });
+
+        }).catch(() => {
+          ResponseSender.send(res, 401, false, 'Token expired, Session timed out.');
         });
+
       });
 
     app.route('/fetch_forecast_of_day')
@@ -31,27 +44,54 @@ export default class AccuWeather {
         const body = req.body;
         const cityName = body.cityName;
         const locationkey = body.locationKey;
-        if (cityName && locationkey) {
-          this.fetchForecastForDay(cityName, locationkey).subscribe((data) => {
-            ResponseSender.send(res, 200, true, data);
-          });
-        } else {
-          ResponseSender.send(res, 422, false, 'Missing required parameters - CityName or LocationKey');
+        const authToken = req.header['token'];
+        if (!authToken) {
+          ResponseSender.send(res, 400, false, 'Authentication token is required.');
+          return;
         }
+
+        TokenGenerator.verify(authToken).then(() => {
+          if (cityName && locationkey) {
+            this.fetchForecastForDay(cityName, locationkey).subscribe((data) => {
+              ResponseSender.send(res, 200, true, data);
+            });
+          } else {
+            ResponseSender.send(res, 422, false, 'Missing required parameters - CityName or LocationKey');
+          }
+
+        }).catch(() => {
+          ResponseSender.send(res, 401, false, 'Token expired, Session timed out.');
+        });
+
+
       });
 
     app.route('/fetch_countries')
       .post((req: Request, res: Response) => {
         const body = req.body;
         const regionId = body.regionID;
-        if (regionId) {
-          this.fetchCountryList(regionId).subscribe((data) => {
-            ResponseSender.send(res, 200, true, data);
-          });
+
+        const authToken = req.header['token'];
+        if (!authToken) {
+          ResponseSender.send(res, 400, false, 'Authentication token is required.');
+          return;
         }
-        else {
-          ResponseSender.send(res, 422, false, 'Missing required parameter - regionId');
-        }
+
+        TokenGenerator.verify(authToken).then(() => {
+          if (regionId) {
+            this.fetchCountryList(regionId).subscribe((data) => {
+              ResponseSender.send(res, 200, true, data);
+            });
+          }
+          else {
+            ResponseSender.send(res, 422, false, 'Missing required parameter - regionId');
+          }
+
+        }).catch(() => {
+          ResponseSender.send(res, 401, false, 'Token expired, Session timed out.');
+        });
+
+
 
       });
 
@@ -61,7 +101,18 @@ export default class AccuWeather {
       .post((req: Request, res: Response) => {
         this.fetchTopCities().subscribe(
           data => {
-            ResponseSender.send(res, 200, true, data);
+            const authToken = req.header['token'];
+            if (!authToken) {
+              ResponseSender.send(res, 400, false, 'Authentication token is required.');
+              return;
+            }
+
+            TokenGenerator.verify(authToken).then(() => {
+              ResponseSender.send(res, 200, true, data);
+
+            }).catch(() => {
+              ResponseSender.send(res, 401, false, 'Token expired, Session timed out.');
+            });
           });
       });
 
@@ -69,13 +120,24 @@ export default class AccuWeather {
       .post((req: Request, res: Response) => {
         const body = req.body;
         const locationKey = body.locationKey;
-        if (locationKey) {
-          this.fetchCurrentConditions(locationKey).subscribe(data => {
-            ResponseSender.send(res, 200, true, data);
-          });
-        } else {
-          ResponseSender.send(res, 422, false, 'Missing required parameter - locationKey');
+        const authToken = req.header['token'];
+        if (!authToken) {
+          ResponseSender.send(res, 400, false, 'Authentication token is required.');
+          return;
         }
+        TokenGenerator.verify(authToken).then(() => {
+
+          if (locationKey) {
+            this.fetchCurrentConditions(locationKey).subscribe(data => {
+              ResponseSender.send(res, 200, true, data);
+            });
+          } else {
+            ResponseSender.send(res, 422, false, 'Missing required parameter - locationKey');
+          }
+
+        }).catch(() => {
+          ResponseSender.send(res, 401, false, 'Token expired, Session timed out.');
+        });
       });
   }
 
