@@ -24,6 +24,9 @@ export default class CreateUser {
             let token = TokenGenerator.sign(userObject);
             ResponseSender.send(res, 200, true, result, token);
           }
+          else {
+            ResponseSender.send(res, 401, false, null);
+          }
         }).catch();
       });
   }
