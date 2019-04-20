@@ -40,6 +40,7 @@
     "mongoose": "^5.5.0",
     "nodemon": "^1.18.11",
     "request": "^2.88.0",
-    "typescript": "^3.4.3"
+    "typescript": "^3.4.3",
+    "request-promise": "^4.2.2"
   }
 }
